@@ -36,6 +36,26 @@ locals {
 
     }
 
+    rbac_policy_map = {
+        key_permissions = {
+            manage = "Key Vault Crypto Officer"
+            read = "Key Vault Crypto User"
+            contribute = "Key Vault Crypto User"
+        }
+        secret_permissions = {
+            manage = "Key Vault Secrets Officer"
+            read = "Key Vault Secrets User"
+            contribute = "Key Vault Secrets Officer"
+        }
+        certificate_permissions = {
+            manage = "Key Vault Certificates Officer"
+            read = "Key Vault Certificates Officer"
+            contribute = "Key Vault Certificates Officer"
+        }
+    }
+
     access_policy_permissions = var.use_rbac ? [] : var.permissions
-    rbac_policy_permissions = var.use_rbac ? var.permissions : []
+    rbac_policy_permissions = flatten([for e in (var.use_rbac ? var.permissions : []) :
+        [for f in ["key_permissions", "secret_permissions", "certificate_permissions"] :
+            { object_id = e.object_id, permission = local.rbac_policy_map[f][e[f]] } ]])
 }
