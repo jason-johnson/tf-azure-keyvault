@@ -2,13 +2,13 @@ locals {
     access_policy_map = {
         key_permissions = {
             manage = [
-                "Get", "List", "Encrypt", "Decrypt", "UnwrapKey", "WrapKey", "Sign", "Verify", "GetAttributes", "UpdateAttributes", "Create", "Import", "Delete", "Recover", "Backup", "Restore", "Purge"
+                "Get", "List", "Encrypt", "Decrypt", "UnwrapKey", "WrapKey", "Sign", "Verify", "Create", "Import", "Delete", "Recover", "Backup", "Restore", "Purge"
             ]
             read = [
-                "Get", "List", "GetAttributes", "GetIssuers", "ListIssuers", "List"
+                "Get", "List"
             ]
             contribute = [
-                "Get", "List", "Encrypt", "Decrypt", "UnwrapKey", "WrapKey", "Sign", "Verify", "GetAttributes", "UpdateAttributes", "Create", "Import", "Delete", "Recover", "Backup", "Restore", "Purge"
+                "Get", "List", "Encrypt", "Decrypt", "UnwrapKey", "WrapKey", "Sign", "Verify", "Create", "Import", "Delete", "Recover", "Backup", "Restore", "Purge"
             ]
         }
         secret_permissions = {
@@ -16,7 +16,7 @@ locals {
                 "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"
             ]
             read = [
-                "Get", "List", "GetAttributes"
+                "Get", "List"
             ]
             contribute = [
                 "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"

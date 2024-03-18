@@ -1,7 +1,7 @@
 module "keyvault" {
     source = "./.."
 
-    name = "mykeyvault"
+    name = "mykv"
     resource_group_name = "myresourcegroup"
     sku_name = "premium"
     use_rbac = false
