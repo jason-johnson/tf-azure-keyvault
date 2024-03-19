@@ -1,5 +1,3 @@
-data "azurerm_client_config" "current" {}
-
 data "namep_azure_name" "main" {
   name     = var.name
   location = var.location

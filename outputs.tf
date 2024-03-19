@@ -8,7 +8,3 @@ output "keyvalut_url" {
     value = azurerm_key_vault.main.vault_uri
   
 }
-
-output "test_variable" {
-    value = local.rbac_policy_permissions
-}

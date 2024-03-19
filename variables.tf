@@ -1,9 +1,16 @@
 variable "name" {
   description = "name to to be part of the keyvault name"
+  type = string
 }
 
 variable "resource_group_name" {
-  description = "name of the resource group to put the keyvault in"  
+  description = "name of the resource group to put the keyvault in"
+  type = string
+}
+
+variable "location" {
+  description = "default location to use if not specified"
+  default = "westeurope"  
 }
 
 variable "sku_name" {
@@ -13,12 +20,13 @@ variable "sku_name" {
 
 variable "use_rbac" {
   description = "whether to use RBAC for the keyvault"
-  default = "true"
+  default = true
   
 }
 
 variable "managing_object_id" {
   description = "object id of the user who will manage the keyvault"
+  type = string
 }
 
 variable "permissions" {
@@ -31,14 +39,4 @@ variable "permissions" {
     certificate_permissions = string
   }))
   
-}
-
-variable "salt" {
-  description = "optional salt for use in the name"
-  default = ""
-}
-
-variable "location" {
-  description = "default location to use if not specified"
-  default = "westeurope"  
 }
