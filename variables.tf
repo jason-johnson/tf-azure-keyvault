@@ -17,6 +17,10 @@ variable "use_rbac" {
   
 }
 
+variable "managing_object_id" {
+  description = "object id of the user who will manage the keyvault"
+}
+
 variable "permissions" {
   description = "list of users and policies to apply to the keyvault"
   default = []

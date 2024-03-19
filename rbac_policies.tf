@@ -2,7 +2,7 @@ resource "azurerm_role_assignment" "manager" {
   count                = var.use_rbac ? 1 : 0
   scope                = azurerm_key_vault.main.id
   role_definition_name = "Key Vault Administrator"
-  principal_id         = data.azurerm_client_config.current.object_id
+  principal_id         = var.managing_object_id
 }
 
 resource "azurerm_role_assignment" "manager_roles" {
@@ -10,7 +10,7 @@ resource "azurerm_role_assignment" "manager_roles" {
 
   scope                = azurerm_key_vault.main.id
   role_definition_name = local.rbac_policy_map[each.key].manage
-  principal_id         = data.azurerm_client_config.current.object_id
+  principal_id         = var.managing_object_id
 }
 
 resource "azurerm_role_assignment" "roles" {
