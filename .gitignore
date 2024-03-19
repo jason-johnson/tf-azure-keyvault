@@ -6,6 +6,7 @@
 *.tfstate.*
 examples/.terraform.lock.hcl
 examples/.terraform
+examples/generated.txt
 
 # Crash log files
 crash.log
