@@ -19,5 +19,16 @@ module "keyvault" {
             secret_permissions = "contribute"
             certificate_permissions = "contribute"
         }
-    ]    
+    ]
+
+    secrets = [
+        {
+            name = "secret1"
+            value = "value1"
+        },
+        {
+            name = "secret2"
+            value = "value2"
+        }
+    ]
 }

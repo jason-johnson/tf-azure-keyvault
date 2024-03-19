@@ -38,5 +38,13 @@ variable "permissions" {
     secret_permissions = string
     certificate_permissions = string
   }))
-  
+}
+
+variable "secrets" {
+  description = "list of secrets to add to the keyvault"
+  default = []
+  type = list(object({
+    name = string
+    value = string
+  }))
 }
