@@ -15,9 +15,12 @@ It also manages dependencies to ensure resources are created in the correct orde
 | <a name="input_name"></a> [name](#input\_name) | name to to be part of the keyvault name | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | name of the resource group to put the keyvault in | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | tenant id to use for the keyvault | `string` | n/a | yes |
+| <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption) | whether to enable disk encryption | `bool` | `true` | no |
 | <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
+| <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | whether to enable purge protection | `bool` | `false` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | list of secrets to add to the keyvault | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | sku name for the keyvault | `string` | `"standard"` | no |
+| <a name="input_soft_delete_retention_days"></a> [soft\_delete\_retention\_days](#input\_soft\_delete\_retention\_days) | number of days to retain soft deleted keys | `number` | `7` | no |
 | <a name="input_use_rbac"></a> [use\_rbac](#input\_use\_rbac) | whether to use RBAC for the keyvault | `bool` | `true` | no |
 ## Requirements
 
@@ -39,7 +42,7 @@ Examples:
 
 ```hcl
 module "keyvault" {
-    source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.0"
+    source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.2"
 
     name = "mykv"
     resource_group_name = "myresourcegroup"
