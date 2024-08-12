@@ -50,7 +50,7 @@ resource "azurerm_service_plan" "main" {
 }
 
 resource "azurerm_linux_web_app" "main" {
-  name                = "myapp"
+  name                = azurerm_service_plan.main.name
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   service_plan_id     = azurerm_service_plan.main.id
