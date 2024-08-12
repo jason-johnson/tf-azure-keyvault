@@ -10,7 +10,12 @@ variable "resource_group_name" {
 
 variable "location" {
   description = "default location to use if not specified"
-  default     = "westeurope"
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "tenant id to use for the keyvault"
+  type        = string
 }
 
 variable "sku_name" {
