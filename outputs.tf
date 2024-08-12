@@ -8,3 +8,8 @@ output "keyvalut_url" {
   value       = azurerm_key_vault.main.vault_uri
 
 }
+
+output "secrets" {
+  description = "The secrets in the keyvault"
+  value       = azurerm_key_vault_secret.main[*].name
+}
