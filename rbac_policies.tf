@@ -6,7 +6,7 @@ resource "azurerm_role_assignment" "manager" {
 }
 
 resource "azurerm_role_assignment" "manager_roles" {
-  for_each             = toset(var.use_rbac ? ["key_permissions", "secret_permissions", "certificate_permissions"] : [])
+  for_each = toset(var.use_rbac ? ["key_permissions", "secret_permissions", "certificate_permissions"] : [])
 
   scope                = azurerm_key_vault.main.id
   role_definition_name = local.rbac_policy_map[each.key].manage
