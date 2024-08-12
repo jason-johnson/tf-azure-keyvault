@@ -11,5 +11,5 @@ output "keyvalut_url" {
 
 output "secrets" {
   description = "The secrets in the keyvault"
-  value       = azurerm_key_vault_secret.main[*].name
+  value       = { for s in azurerm_key_vault_secret.main : s.name => s.value }
 }
