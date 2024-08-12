@@ -23,6 +23,22 @@ variable "sku_name" {
   default     = "standard"
 }
 
+variable "purge_protection_enabled" {
+  description = "whether to enable purge protection"
+  default     = false
+}
+
+variable "soft_delete_retention_days" {
+  description = "number of days to retain soft deleted keys"
+  default     = 7
+}
+
+variable "enabled_for_disk_encryption" {
+  description = "whether to enable disk encryption"
+  default     = true
+  
+}
+
 variable "use_rbac" {
   description = "whether to use RBAC for the keyvault"
   default     = true
