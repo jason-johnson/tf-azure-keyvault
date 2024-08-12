@@ -14,7 +14,7 @@ resource "azurerm_role_assignment" "manager_roles" {
 }
 
 resource "azurerm_role_assignment" "roles" {
-  for_each             = { for e in local.rbac_policy_permissions : "${e.object_id}-${e.permission}" => e }
+  for_each             = { for e in local.rbac_policy_permissions : "${e.name}-${e.permission}" => e }
   scope                = azurerm_key_vault.main.id
   role_definition_name = each.value.permission
   principal_id         = each.value.object_id

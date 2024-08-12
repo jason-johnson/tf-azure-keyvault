@@ -36,7 +36,7 @@ variable "soft_delete_retention_days" {
 variable "enabled_for_disk_encryption" {
   description = "whether to enable disk encryption"
   default     = true
-  
+
 }
 
 variable "use_rbac" {
@@ -54,6 +54,7 @@ variable "permissions" {
   description = "list of users and policies to apply to the keyvault"
   default     = []
   type = list(object({
+    name                    = string
     object_id               = string
     key_permissions         = string
     secret_permissions      = string
