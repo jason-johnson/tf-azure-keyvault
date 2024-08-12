@@ -3,6 +3,8 @@ module "keyvault" {
 
     name = "mykv"
     resource_group_name = "myresourcegroup"
+    location = "westeurope"
+    tenant_id = data.azurerm_client_config.current.tenant_id
     sku_name = "premium"
     use_rbac = false
     managing_object_id = data.azurerm_client_config.current.object_id
