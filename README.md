@@ -16,7 +16,7 @@ It also manages dependencies to ensure resources are created in the correct orde
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | name of the resource group to put the keyvault in | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | tenant id to use for the keyvault | `string` | n/a | yes |
 | <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption) | whether to enable disk encryption | `bool` | `true` | no |
-| <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
+| <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    name                    = string<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
 | <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | whether to enable purge protection | `bool` | `false` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | list of secrets to add to the keyvault | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | sku name for the keyvault | `string` | `"standard"` | no |
@@ -41,41 +41,104 @@ It also manages dependencies to ensure resources are created in the correct orde
 Examples:
 
 ```hcl
+# policy based access control
+
 module "keyvault" {
-    source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.2"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.3"
 
-    name = "mykv"
-    resource_group_name = "myresourcegroup"
-    location = "westeurope"
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    sku_name = "premium"
-    use_rbac = false
-    managing_object_id = data.azurerm_client_config.current.object_id
-    permissions = [
-        {
-            object_id = "00000000-0000-0000-0000-000000000000"
-            key_permissions = "read"
-            secret_permissions = "read"
-            certificate_permissions = "read"
-        },
-        {
-            object_id = "11111111-0000-0000-0000-000000000000"
-            key_permissions = "contribute"
-            secret_permissions = "contribute"
-            certificate_permissions = "contribute"
-        }
-    ]
+  name                = "mykv"
+  resource_group_name = "myresourcegroup"
+  location            = "westeurope"
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "premium"
+  use_rbac            = false
+  managing_object_id  = data.azurerm_client_config.current.object_id
+  permissions = [
+    {
+      name                    = "example_reader"
+      object_id               = "00000000-0000-0000-0000-000000000000"
+      key_permissions         = "read"
+      secret_permissions      = "read"
+      certificate_permissions = "read"
+    },
+    {
+      name                    = "example_contributor"
+      object_id               = "11111111-0000-0000-0000-000000000000"
+      key_permissions         = "contribute"
+      secret_permissions      = "contribute"
+      certificate_permissions = "contribute"
+    }
+  ]
 
-    secrets = [
-        {
-            name = "secret1"
-            value = "value1"
-        },
-        {
-            name = "secret2"
-            value = "value2"
-        }
-    ]
+  secrets = [
+    {
+      name  = "secret1"
+      value = "value1"
+    },
+    {
+      name  = "secret2"
+      value = "value2"
+    }
+  ]
+}
+
+# RBAC based example
+
+resource "azurerm_service_plan" "main" {
+  name                = "myplan"
+  resource_group_name = "myresourcegroup"
+  location            = "westeurope"
+  os_type             = "Linux"
+  sku_name            = "P1v2"
+}
+
+resource "azurerm_linux_web_app" "main" {
+  name                = "myapp"
+  resource_group_name = "myresourcegroup"
+  location            = "westeurope"
+  service_plan_id     = azurerm_service_plan.main.id
+
+  site_config {
+    application_stack {
+      docker_image_name = "hello:latest"
+    }
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+module "keyvault_rbac" {
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.3"
+
+  name                = "rbkv"
+  resource_group_name = "myresourcegroup"
+  location            = "westeurope"
+  sku_name            = "standard"
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  use_rbac            = true
+  managing_object_id  = data.azurerm_client_config.current.object_id
+  permissions = [
+    {
+      name                    = "myapp"
+      object_id               = azurerm_linux_web_app.main.identity[0].principal_id
+      key_permissions         = "read"
+      secret_permissions      = "read"
+      certificate_permissions = "read"
+    }
+  ]
+
+  secrets = [
+    {
+      name  = "secret1"
+      value = "value1"
+    },
+    {
+      name  = "secret2"
+      value = "value2"
+    }
+  ]
 }
 ```  
 <!-- END_TF_DOCS -->
