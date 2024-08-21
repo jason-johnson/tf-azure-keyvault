@@ -17,6 +17,7 @@ It also manages dependencies to ensure resources are created in the correct orde
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | tenant id to use for the keyvault | `string` | n/a | yes |
 | <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption) | whether to enable disk encryption | `bool` | `true` | no |
 | <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    name                    = string<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
+| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | whether to enable public network access | `bool` | `true` | no |
 | <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | whether to enable purge protection | `bool` | `false` | no |
 | <a name="input_secrets"></a> [secrets](#input\_secrets) | list of secrets to add to the keyvault | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | sku name for the keyvault | `string` | `"standard"` | no |
