@@ -45,6 +45,11 @@ variable "use_rbac" {
 
 }
 
+variable "public_network_access_enabled" {
+  description = "whether to enable public network access"
+  default     = true
+}
+
 variable "managing_object_id" {
   description = "object id of the user who will manage the keyvault"
   type        = string
