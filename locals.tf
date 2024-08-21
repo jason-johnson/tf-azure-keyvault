@@ -58,4 +58,6 @@ locals {
   rbac_policy_permissions = flatten([for e in(var.use_rbac ? var.permissions : []) :
     [for f in ["key_permissions", "secret_permissions", "certificate_permissions"] :
   { name = e.name, object_id = e.object_id, permission = local.rbac_policy_map[f][e[f]] }]])
+
+  network_acls = var.network_acls != null ? [var.network_acls] : []
 }

@@ -16,6 +16,7 @@ It also manages dependencies to ensure resources are created in the correct orde
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | name of the resource group to put the keyvault in | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | tenant id to use for the keyvault | `string` | n/a | yes |
 | <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption) | whether to enable disk encryption | `bool` | `true` | no |
+| <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | network ACLs to apply to the keyvault | <pre>object({<br>    bypass = string<br>    default_action = string<br>    ip_rules = optional(list(string), [])<br>    virtual_network_subnet_ids = optional(list(string), [])<br>  })</pre> | `null` | no |
 | <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    name                    = string<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
 | <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | whether to enable public network access | `bool` | `true` | no |
 | <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | whether to enable purge protection | `bool` | `false` | no |
@@ -45,7 +46,7 @@ Examples:
 # policy based access control
 
 module "keyvault" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.3"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.5"
 
   name                = "mykv"
   resource_group_name = "myresourcegroup"
@@ -111,7 +112,7 @@ resource "azurerm_linux_web_app" "main" {
 }
 
 module "keyvault_rbac" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.3"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.5"
 
   name                = "rbkv"
   resource_group_name = "myresourcegroup"
@@ -120,6 +121,12 @@ module "keyvault_rbac" {
   tenant_id           = data.azurerm_client_config.current.tenant_id
   use_rbac            = true
   managing_object_id  = data.azurerm_client_config.current.object_id
+
+  network_acls = {
+    bypass         = "AzureServices"
+    default_action = "Deny"
+  }
+
   permissions = [
     {
       name                    = "myapp"

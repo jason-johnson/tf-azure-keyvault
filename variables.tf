@@ -50,6 +50,17 @@ variable "public_network_access_enabled" {
   default     = true
 }
 
+variable "network_acls" {
+  description = "network ACLs to apply to the keyvault"
+  default = null
+  type = object({
+    bypass = string
+    default_action = string
+    ip_rules = optional(list(string), [])
+    virtual_network_subnet_ids = optional(list(string), [])
+  })
+}
+
 variable "managing_object_id" {
   description = "object id of the user who will manage the keyvault"
   type        = string

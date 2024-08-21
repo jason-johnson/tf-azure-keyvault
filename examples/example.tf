@@ -76,6 +76,12 @@ module "keyvault_rbac" {
   tenant_id           = data.azurerm_client_config.current.tenant_id
   use_rbac            = true
   managing_object_id  = data.azurerm_client_config.current.object_id
+
+  network_acls = {
+    bypass         = "AzureServices"
+    default_action = "Deny"
+  }
+
   permissions = [
     {
       name                    = "myapp"
