@@ -10,11 +10,11 @@ resource "azurerm_key_vault_access_policy" "manager" {
 }
 
 resource "azurerm_key_vault_access_policy" "permissions" {
-  for_each = { for e in local.access_policy_permissions : e.object_id => e }
+  for_each = { for e in local.access_policy_permissions : e.name => e }
 
   key_vault_id = azurerm_key_vault.main.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = each.key
+  object_id    = each.value.object_id
 
   key_permissions         = local.access_policy_map["key_permissions"][each.value.key_permissions]
   secret_permissions      = local.access_policy_map["secret_permissions"][each.value.secret_permissions]
