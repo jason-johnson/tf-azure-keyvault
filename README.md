@@ -46,7 +46,7 @@ Examples:
 # policy based access control
 
 module "keyvault" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.5"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
 
   name                = "mykv"
   resource_group_name = "myresourcegroup"
@@ -112,7 +112,7 @@ resource "azurerm_linux_web_app" "main" {
 }
 
 module "keyvault_rbac" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.5"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
 
   name                = "rbkv"
   resource_group_name = "myresourcegroup"
