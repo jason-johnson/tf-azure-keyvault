@@ -3,7 +3,7 @@ output "keyvault_id" {
   value       = azurerm_key_vault.main.id
 }
 
-output "keyvalut_url" {
+output "keyvault_url" {
   description = "The url of the keyvault"
   value       = azurerm_key_vault.main.vault_uri
 

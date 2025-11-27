@@ -34,7 +34,7 @@ It also manages dependencies to ensure resources are created in the correct orde
 
 | Name | Description |
 |------|-------------|
-| <a name="output_keyvalut_url"></a> [keyvalut\_url](#output\_keyvalut\_url) | The url of the keyvault |
+| <a name="output_keyvault_url"></a> [keyvault\_url](#output\_keyvault\_url) | The url of the keyvault |
 | <a name="output_keyvault_id"></a> [keyvault\_id](#output\_keyvault\_id) | The id of the keyvault |
 | <a name="output_secrets"></a> [secrets](#output\_secrets) | The secrets in the keyvault |
 
