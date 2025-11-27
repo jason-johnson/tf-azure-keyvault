@@ -48,7 +48,7 @@ Examples:
 # See: https://registry.terraform.io/providers/jason-johnson/namep/latest/docs
 
 module "keyvault" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.2.0"
 
   # Use namep to generate a standardized keyvault name
   name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "mykv" })
@@ -115,7 +115,7 @@ resource "azurerm_linux_web_app" "main" {
 }
 
 module "keyvault_rbac" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.2.0"
 
   # Use namep to generate a standardized keyvault name
   name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "rbkv" })
