@@ -34,8 +34,8 @@ It also manages dependencies to ensure resources are created in the correct orde
 
 | Name | Description |
 |------|-------------|
-| <a name="output_keyvault_url"></a> [keyvault\_url](#output\_keyvault\_url) | The url of the keyvault |
 | <a name="output_keyvault_id"></a> [keyvault\_id](#output\_keyvault\_id) | The id of the keyvault |
+| <a name="output_keyvault_url"></a> [keyvault\_url](#output\_keyvault\_url) | The url of the keyvault |
 | <a name="output_secrets"></a> [secrets](#output\_secrets) | The secrets in the keyvault |
 
 
@@ -48,7 +48,7 @@ Examples:
 # See: https://registry.terraform.io/providers/jason-johnson/namep/latest/docs
 
 module "keyvault" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.2.0"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.3.0"
 
   # Use namep to generate a standardized keyvault name
   name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "mykv" })
@@ -115,7 +115,7 @@ resource "azurerm_linux_web_app" "main" {
 }
 
 module "keyvault_rbac" {
-  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.2.0"
+  source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.3.0"
 
   # Use namep to generate a standardized keyvault name
   name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "rbkv" })
