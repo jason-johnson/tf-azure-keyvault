@@ -3,6 +3,25 @@ variable "name" {
   type        = string
 }
 
+variable "namep_configuration" {
+  description = "Configuration for namep provider to generate resource names. Usually created by the namep_configuration data source. If not provided, the name variable is used directly."
+  type = object({
+    variables     = map(string)
+    variable_maps = map(map(string))
+    formats       = map(string)
+    types = map(object({
+      name             = string
+      slug             = string
+      min_length       = number
+      max_length       = number
+      lowercase        = bool
+      validation_regex = string
+      default_selector = string
+    }))
+  })
+  default = null
+}
+
 variable "resource_group_name" {
   description = "name of the resource group to put the keyvault in"
   type        = string

@@ -4,6 +4,7 @@ module "keyvault" {
   source = "./.."
 
   name                = "mykv"
+  namep_configuration = data.namep_configuration.main.configuration
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -70,6 +71,7 @@ module "keyvault_rbac" {
   source = "./.."
 
   name                = "rbkv"
+  namep_configuration = data.namep_configuration.main.configuration
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   sku_name            = "standard"

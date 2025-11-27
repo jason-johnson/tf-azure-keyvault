@@ -1,11 +1,9 @@
-data "namep_azure_name" "main" {
-  name     = var.name
-  location = var.location
-  type     = "azurerm_key_vault"
+locals {
+  keyvault_name = var.namep_configuration != null ? provider::namep::namestring("azurerm_key_vault", var.namep_configuration, { name = var.name }) : var.name
 }
 
 resource "azurerm_key_vault" "main" {
-  name                          = data.namep_azure_name.main.result
+  name                          = local.keyvault_name
   location                      = var.location
   resource_group_name           = var.resource_group_name
   enabled_for_disk_encryption   = var.enabled_for_disk_encryption

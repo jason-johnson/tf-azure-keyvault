@@ -17,17 +17,24 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
+provider "namep" {}
 
-provider "namep" {
-  slice_string                 = replace(data.azurerm_subscription.current.display_name, "-", " ")
-  default_nodash_name_format   = "#{SLUG}#{TOKEN_1}#{TOKEN_2}#{SHORT_LOC}#{NAME}#{SALT}"
-  default_resource_name_format = "#{SLUG}-#{TOKEN_1}-#{TOKEN_2}-#{SHORT_LOC}-#{NAME}#{-SALT}"
+data "namep_azure_locations" "main" {}
 
-  custom_resource_formats = {
-    azurerm_load_test = "lt-#{TOKEN_1}-#{TOKEN_2}-#{SHORT_LOC}-#{NAME}#{-SALT}"
+data "namep_azure_caf_types" "main" {}
+
+data "namep_configuration" "main" {
+  variable_maps = data.namep_azure_locations.main.location_maps
+  types         = data.namep_azure_caf_types.main.types
+  formats = {
+    azure_nodashes_subscription = "#{SLUG}#{TOKEN_1}#{TOKEN_2}#{LOCS[LOC]}#{NAME}#{SALT}"
+    azure_dashes_subscription   = "#{SLUG}-#{TOKEN_1}-#{TOKEN_2}-#{LOCS[LOC]}-#{NAME}#{-SALT}"
   }
 
-  extra_tokens = {
-    salt = ""
+  variables = {
+    token_1 = replace(data.azurerm_subscription.current.display_name, "-", " ")
+    token_2 = ""
+    loc     = "westeurope"
+    salt    = ""
   }
 }
