@@ -1,9 +1,13 @@
 # policy based access control
+#
+# This example uses the namep provider to generate standardized resource names.
+# See: https://registry.terraform.io/providers/jason-johnson/namep/latest/docs
 
 module "keyvault" {
   source = "./.."
 
-  name                = "mykv"
+  # Use namep to generate a standardized keyvault name
+  name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "mykv" })
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -69,7 +73,8 @@ resource "azurerm_linux_web_app" "main" {
 module "keyvault_rbac" {
   source = "./.."
 
-  name                = "rbkv"
+  # Use namep to generate a standardized keyvault name
+  name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "rbkv" })
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   sku_name            = "standard"

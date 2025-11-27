@@ -12,15 +12,15 @@ It also manages dependencies to ensure resources are created in the correct orde
 |------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | default location to use if not specified | `string` | n/a | yes |
 | <a name="input_managing_object_id"></a> [managing\_object\_id](#input\_managing\_object\_id) | object id of the user who will manage the keyvault | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | name to to be part of the keyvault name | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of the keyvault | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | name of the resource group to put the keyvault in | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | tenant id to use for the keyvault | `string` | n/a | yes |
 | <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption) | whether to enable disk encryption | `bool` | `true` | no |
-| <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | network ACLs to apply to the keyvault | <pre>object({<br>    bypass = string<br>    default_action = string<br>    ip_rules = optional(list(string), [])<br>    virtual_network_subnet_ids = optional(list(string), [])<br>  })</pre> | `null` | no |
-| <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br>    name                    = string<br>    object_id               = string<br>    key_permissions         = string<br>    secret_permissions      = string<br>    certificate_permissions = string<br>  }))</pre> | `[]` | no |
+| <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | network ACLs to apply to the keyvault | <pre>object({<br/>    bypass = string<br/>    default_action = string<br/>    ip_rules = optional(list(string), [])<br/>    virtual_network_subnet_ids = optional(list(string), [])<br/>  })</pre> | `null` | no |
+| <a name="input_permissions"></a> [permissions](#input\_permissions) | list of users and policies to apply to the keyvault | <pre>list(object({<br/>    name                    = string<br/>    object_id               = string<br/>    key_permissions         = string<br/>    secret_permissions      = string<br/>    certificate_permissions = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | whether to enable public network access | `bool` | `true` | no |
 | <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | whether to enable purge protection | `bool` | `false` | no |
-| <a name="input_secrets"></a> [secrets](#input\_secrets) | list of secrets to add to the keyvault | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `[]` | no |
+| <a name="input_secrets"></a> [secrets](#input\_secrets) | list of secrets to add to the keyvault | <pre>list(object({<br/>    name  = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name) | sku name for the keyvault | `string` | `"standard"` | no |
 | <a name="input_soft_delete_retention_days"></a> [soft\_delete\_retention\_days](#input\_soft\_delete\_retention\_days) | number of days to retain soft deleted keys | `number` | `7` | no |
 | <a name="input_use_rbac"></a> [use\_rbac](#input\_use\_rbac) | whether to use RBAC for the keyvault | `bool` | `true` | no |
@@ -30,7 +30,6 @@ It also manages dependencies to ensure resources are created in the correct orde
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.45.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.80 |
-| <a name="requirement_namep"></a> [namep](#requirement\_namep) | >= 1.1 |
 ## Outputs
 
 | Name | Description |
@@ -44,11 +43,15 @@ Examples:
 
 ```hcl
 # policy based access control
+#
+# This example uses the namep provider to generate standardized resource names.
+# See: https://registry.terraform.io/providers/jason-johnson/namep/latest/docs
 
 module "keyvault" {
   source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
 
-  name                = "mykv"
+  # Use namep to generate a standardized keyvault name
+  name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "mykv" })
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -114,7 +117,8 @@ resource "azurerm_linux_web_app" "main" {
 module "keyvault_rbac" {
   source = "github.com/jason-johnson/tf-azure-keyvault?ref=v1.1.6"
 
-  name                = "rbkv"
+  # Use namep to generate a standardized keyvault name
+  name                = provider::namep::namestring("azurerm_key_vault", data.namep_configuration.main.configuration, { name = "rbkv" })
   resource_group_name = "myresourcegroup"
   location            = "westeurope"
   sku_name            = "standard"

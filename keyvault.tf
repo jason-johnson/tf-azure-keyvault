@@ -1,11 +1,5 @@
-data "namep_azure_name" "main" {
-  name     = var.name
-  location = var.location
-  type     = "azurerm_key_vault"
-}
-
 resource "azurerm_key_vault" "main" {
-  name                          = data.namep_azure_name.main.result
+  name                          = var.name
   location                      = var.location
   resource_group_name           = var.resource_group_name
   enabled_for_disk_encryption   = var.enabled_for_disk_encryption
