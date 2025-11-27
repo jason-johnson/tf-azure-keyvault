@@ -17,6 +17,8 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
+# Namep provider for generating standardized resource names.
+# See: https://registry.terraform.io/providers/jason-johnson/namep/latest/docs
 provider "namep" {}
 
 data "namep_azure_locations" "main" {}

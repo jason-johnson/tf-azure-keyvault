@@ -1,13 +1,5 @@
-locals {
-  keyvault_name = (
-    var.namep_configuration != null
-    ? provider::namep::namestring("azurerm_key_vault", var.namep_configuration, { name = var.name })
-    : var.name
-  )
-}
-
 resource "azurerm_key_vault" "main" {
-  name                          = local.keyvault_name
+  name                          = var.name
   location                      = var.location
   resource_group_name           = var.resource_group_name
   enabled_for_disk_encryption   = var.enabled_for_disk_encryption
