@@ -4,6 +4,9 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+# .terraform.lock.hcl files
+.terraform.lock.hcl
 examples/.terraform.lock.hcl
 examples/.terraform
 examples/generated.txt
