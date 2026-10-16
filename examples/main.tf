@@ -25,18 +25,27 @@ data "namep_azure_locations" "main" {}
 
 data "namep_azure_caf_types" "main" {}
 
+resource "random_string" "rnd" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 data "namep_configuration" "main" {
   variable_maps = data.namep_azure_locations.main.location_maps
   types         = data.namep_azure_caf_types.main.types
   formats = {
     azure_nodashes_subscription = "#{SLUG}#{TOKEN_1}#{TOKEN_2}#{LOCS[LOC]}#{NAME}#{SALT}"
     azure_dashes_subscription   = "#{SLUG}-#{TOKEN_1}-#{TOKEN_2}-#{LOCS[LOC]}-#{NAME}#{-SALT}"
+    azure_nodashes_global       = "#{SLUG}#{TOKEN_1}#{TOKEN_2}#{LOCS[LOC]}#{NAME}#{RND}#{SALT}"
+    azure_dashes_global         = "#{SLUG}-#{TOKEN_1}-#{TOKEN_2}-#{LOCS[LOC]}-#{NAME}-#{RND}-#{SALT}"
   }
 
   variables = {
     token_1 = replace(data.azurerm_subscription.current.display_name, "-", " ")
     token_2 = ""
     loc     = "westeurope"
+    rnd     = random_string.rnd.result
     salt    = ""
   }
 }
